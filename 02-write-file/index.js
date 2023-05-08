@@ -30,26 +30,3 @@ function exitProcess() {
 rl.on('SIGINT', () => {
   exitProcess();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const readableStream = fs.createReadStream('source.txt');
-
-
-
-
-
-// fs.mkdir(path.join(__dirname, 'riddle'), err => {
-// 	if (err) throw err;
-// 	console.log('Папка была создана');
-// });
