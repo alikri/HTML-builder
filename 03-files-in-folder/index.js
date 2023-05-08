@@ -12,9 +12,8 @@ async function readDirectory(directoryPath) {
         const fileExtension = path.extname(filePath);
         const fileName = path.basename(filePath, fileExtension);
         const fileSizeInBytes = stats.size;
-        const fileSizeInKB = Math.round(fileSizeInBytes / 1024 * 100) / 100;
 
-        console.log(`${fileName} - ${fileExtension.substr(1)} - ${fileSizeInKB}kb`);
+        console.log(`${fileName} - ${fileExtension.slice(1)} - ${fileSizeInBytes}kb`);
       }
     }
   } catch (error) {
@@ -24,4 +23,5 @@ async function readDirectory(directoryPath) {
 
 const directoryPath = path.join(__dirname, 'secret-folder');
 readDirectory(directoryPath);
+
 
