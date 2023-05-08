@@ -6,10 +6,7 @@ async function readDirectory(directoryPath) {
     const dirents = await fs.readdir(directoryPath, { withFileTypes: true });
 
     for (const dirent of dirents) {
-      if (dirent.isDirectory()) {
-        const innerDirectoryPath = path.join(directoryPath, dirent.name);
-        await readDirectory(innerDirectoryPath);
-      } else if (dirent.isFile()) {
+      if (dirent.isFile()) {
         const filePath = path.join(directoryPath, dirent.name);
         const stats = await fs.stat(filePath);
         const fileExtension = path.extname(filePath);
@@ -27,3 +24,4 @@ async function readDirectory(directoryPath) {
 
 const directoryPath = path.join(__dirname, 'secret-folder');
 readDirectory(directoryPath);
+
