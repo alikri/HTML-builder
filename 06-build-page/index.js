@@ -13,10 +13,10 @@ const DIST_ASSETS_DIR = path.join(DIST_DIR, 'assets');
 async function buildPage() {
   const template = await fs.readFile(TEMPLATE_PATH, 'utf-8');
 
-  const result = template
-    .replace('{{header}}', await readComponent('header.html'))
-    .replace('{{articles}}', await readComponent('articles.html'))
-    .replace('{{footer}}', await readComponent('footer.html'));
+  const components = await readComponents();
+  const result = Object.keys(components).reduce((acc, key) => {
+    return acc.replace(`{{${key}}}`, components[key]);
+  }, template);
 
   const stylesFiles = await fs.readdir(STYLES_DIR);
   const cssFiles = stylesFiles.filter(file => file.endsWith('.css'));
@@ -43,9 +43,17 @@ async function buildPage() {
   await fs.writeFile(DIST_INDEX_PATH, result);
 }
 
-async function readComponent(name) {
-  const componentPath = path.join(COMPONENTS_DIR, name);
-  return await fs.readFile(componentPath, 'utf-8');
+async function readComponents() {
+  const components = {};
+  const componentFiles = await fs.readdir(COMPONENTS_DIR);
+  const componentPromises = componentFiles.map(async (file) => {
+    const componentName = file.split('.')[0];
+    const componentPath = path.join(COMPONENTS_DIR, file);
+    const componentContent = await fs.readFile(componentPath, 'utf-8');
+    components[componentName] = componentContent;
+  });
+  await Promise.all(componentPromises);
+  return components;
 }
 
 async function copyDirectory(src, dest) {
